@@ -1,0 +1,131 @@
+print("LassoCV")
+for seed in random_seed:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    pipe = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('model', LassoCV(alphas=[0.1, 1.0,10.0],random_state=seed,max_iter=10000))
+    ])
+    pipe.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = pipe.predict(X_test)
+
+    # chosen_l1_ratio = pipe['model'].l1_ratio_
+
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
+
+    # Print in CSV format
+    print(f"{seed},{mse:.3f},{mae:.3f},{r2:.3f},{rmse:.3f}")
+
+print("RidgeCV")
+for seed in random_seed:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    pipe = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('model', RidgeCV(alphas=[0.1, 1.0,10.0]))
+    ])
+    pipe.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = pipe.predict(X_test)
+
+    # chosen_l1_ratio = pipe['model'].l1_ratio_
+
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
+
+    # Print in CSV format
+    print(f"{seed},{mse:.3f},{mae:.3f},{r2:.3f},{rmse:.3f}")
+
+print("ElasticNetCV")
+for seed in random_seed:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    pipe = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('model', ElasticNetCV(cv=10, random_state=seed, max_iter=10000, alphas=[0.1, 1.0,10.0],l1_ratio=[0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8])),
+    ])
+    pipe.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = pipe.predict(X_test)
+
+    chosen_l1_ratio = pipe['model'].l1_ratio_
+
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
+
+    # Print in CSV format
+    print(f"{seed},{mse:.3f},{mae:.3f},{r2:.3f},{rmse:.3f},{chosen_l1_ratio}")
+
+print("LinearRegression")
+for seed in random_seed:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    pipe = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('model', LinearRegression())
+    ])
+    pipe.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = pipe.predict(X_test)
+
+    # chosen_l1_ratio = pipe['model'].l1_ratio_
+
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
+
+    # Print in CSV format
+    print(f"{seed},{mse:.3f},{mae:.3f},{r2:.3f},{rmse:.3f}")
+
+print("MLPRegressor")
+for seed in random_seed:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    pipe = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('model', MLPRegressor(hidden_layer_sizes=(100,100,100),max_iter=10000,random_state=seed))
+    ])
+    pipe.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = pipe.predict(X_test)
+
+    # chosen_l1_ratio = pipe['model'].l1_ratio_
+
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
+
+    # Print in CSV format
+    print(f"{seed},{mse:.3f},{mae:.3f},{r2:.3f},{rmse:.3f}")
+
+print("DecisionTreeRegressor")
+for seed in random_seed:
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
+    pipe = Pipeline(steps=[
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('model', DecisionTreeRegressor(max_depth=100,random_state=seed))
+    ])
+    pipe.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = pipe.predict(X_test)
+
+    # chosen_l1_ratio = pipe['model'].l1_ratio_
+
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+    rmse = np.sqrt(mse)
+
+    # Print in CSV format
+    print(f"{seed},{mse:.3f},{mae:.3f},{r2:.3f},{rmse:.3f}")
