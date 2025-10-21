@@ -6,6 +6,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression,LassoCV,RidgeCV,ElasticNetCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.neural_network import MLPRegressor
+from sklearn.preprocessing import StandardScaler
 from sklearn.tree import DecisionTreeRegressor
 
 # Load dataset
@@ -24,14 +25,16 @@ y = cleaned_df["Calories (kcal)"]
 #Testing model
 random_seed = [1,2,3,5,7,99,100,666,2025,9999]
 
-print("MLPRegressor")
 for seed in random_seed:
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)
-    model = MLPRegressor(random_state=seed, hidden_layer_sizes=(15,), max_iter=10000)
-    model.fit(X_train, y_train)
+    pipeline = Pipeline([
+        ("scaler", StandardScaler()),
+        ("model", LinearRegression()),
+    ])
+    pipeline.fit(X_train, y_train)
 
     # Make predictions
-    y_pred = model.predict(X_test)
+    y_pred = pipeline.predict(X_test)
 
     mse = mean_squared_error(y_test, y_pred)
     mae = mean_absolute_error(y_test, y_pred)
